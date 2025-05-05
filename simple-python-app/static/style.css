@@ -1,0 +1,90 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+.header {
+    padding: 20px 0;
+    border-bottom: 1px solid #444;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #4CAF50;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+.nav-links a:hover {
+    color: #2E8B57;
+}
+
+.main-title {
+    font-size: 2.5em;
+    color: #4CAF50;
+    margin-top: 40px;
+}
+
+.content {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+.btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.features {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.feature-box {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+.feature-box h3 {
+    color: #4CAF50;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    border-top: 1px solid #444;
+}

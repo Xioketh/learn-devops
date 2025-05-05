@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h2 class="main-title">Welcome to AWS Deployment Test</h2>
+        <p>This is a simple Flask application designed to test deployment on AWS services like EC2, Elastic Beanstalk, or Lambda.</p>
+        
+        <div class="features">
+            <div class="feature-box">
+                <h3>EC2 Deployment</h3>
+                <p>Learn how to deploy this application on an AWS EC2 instance with Nginx or Apache.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h3>Elastic Beanstalk</h3>
+                <p>Discover the simplicity of deploying Python applications using AWS Elastic Beanstalk.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h3>Lambda Function</h3>
+                <p>Explore serverless deployment options with AWS Lambda and API Gateway.</p>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('about') }}" class="btn">Learn More About Us</a>
+    </div>
+{% endblock %}

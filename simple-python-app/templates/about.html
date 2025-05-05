@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h2 class="main-title">About Our Project</h2>
+        <p>This project was created to demonstrate AWS deployment capabilities with Flask applications.</p>
+        
+        <h3>Our Mission</h3>
+        <p>To simplify the process of deploying Python web applications to AWS cloud services and provide clear examples for developers.</p>
+        
+        <h3>Technologies Used</h3>
+        <ul>
+            <li>Flask - Python web framework</li>
+            <li>AWS EC2 - Virtual servers in the cloud</li>
+            <li>AWS Elastic Beanstalk - Platform as a Service</li>
+            <li>AWS Lambda - Serverless computing</li>
+        </ul>
+        
+        <h3>Get Started</h3>
+        <p>Clone this repository, follow the deployment guides, and start your AWS journey today!</p>
+        
+        <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+    </div>
+{% endblock %}
