@@ -4,26 +4,133 @@
 
 {% block content %}
     <div class="content">
-        <h2 class="main-title">Welcome to AWS Deployment Test</h2>
-        <p>This is a simple Flask application designed to test deployment on AWS services like EC2, Elastic Beanstalk, or Lambda.</p>
-        
+        <h2 class="main-title">AWS CI/CD Deployment Pipeline with Docker</h2>
+        <p>This project demonstrates a complete containerized deployment pipeline for a Flask application on AWS.</p>
+
         <div class="features">
             <div class="feature-box">
-                <h3>EC2 Deployment</h3>
-                <p>Learn how to deploy this application on an AWS EC2 instance with Nginx or Apache.</p>
+                <h3>Core Technologies</h3>
+                <ul>
+                    <li>Python 3.9+ & Flask</li>
+                    <li>Docker & Docker Compose</li>
+                    <li>AWS ECS/EKS (for container orchestration)</li>
+                    <li>GitHub Actions/AWS CodeBuild</li>
+                </ul>
             </div>
-            
+
             <div class="feature-box">
-                <h3>Elastic Beanstalk</h3>
-                <p>Discover the simplicity of deploying Python applications using AWS Elastic Beanstalk.</p>
+                <h3>AWS Services</h3>
+                <ul>
+                    <li>ECR (Elastic Container Registry)</li>
+                    <li>ECS (Elastic Container Service)</li>
+                    <li>CodePipeline with Docker support</li>
+                    <li>EC2 (for Docker hosts)</li>
+                    <li>ALB (Application Load Balancer)</li>
+                </ul>
             </div>
-            
+
             <div class="feature-box">
-                <h3>Lambda Function</h3>
-                <p>Explore serverless deployment options with AWS Lambda and API Gateway.</p>
+                <h3>Pipeline Stages</h3>
+                <ol>
+                    <li>Code push triggers pipeline</li>
+                    <li>Docker image build & push to ECR</li>
+                    <li>Security scanning (Trivy/Clair)</li>
+                    <li>Deploy to ECS/EKS</li>
+                    <li>Smoke tests & monitoring</li>
+                </ol>
             </div>
         </div>
-        
-        <a href="{{ url_for('about') }}" class="btn">Learn More About Us</a>
+
+        <h3>GitHub Repository</h3>
+        <p>View the source code and deployment configuration:</p>
+        <a href="https://github.com/yourusername/aws-flask-docker-deploy" class="btn" target="_blank">View on GitHub</a>
+
+        <h3>Docker Implementation</h3>
+        <div class="architecture">
+            <p><strong>Dockerfile:</strong> Containerizes the Flask application</p>
+            <pre>
+# Dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 5000
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]</pre>
+
+            <p><strong>Docker Compose (dev):</strong> Local development setup</p>
+            <pre>
+# docker-compose.yml
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development</pre>
+
+            <p><strong>AWS CodeBuild (buildspec.yml):</strong> Docker image build</p>
+            <pre>
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t ${REPO_NAME} .
+      - docker tag ${REPO_NAME}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${REPO_NAME}:latest
+  post_build:
+    commands:
+      - echo Pushing image to ECR...
+      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${REPO_NAME}:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"flask-app","imageUri":"%s"}]' ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${REPO_NAME}:latest > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json</pre>
+        </div>
+
+        <h3>Deployment Options</h3>
+        <div class="deployment-options">
+            <div class="option">
+                <h4>ECS Deployment</h4>
+                <p>Create ECS cluster with Fargate or EC2 launch type</p>
+                <pre>
+# task-definition.json
+{
+  "containerDefinitions": [{
+    "name": "flask-app",
+    "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${REPO_NAME}:latest",
+    "portMappings": [{
+      "containerPort": 5000,
+      "hostPort": 5000
+    }]
+  }]
+}</pre>
+            </div>
+            <div class="option">
+                <h4>EC2 Deployment</h4>
+                <p>Manual Docker deployment to EC2 instance:</p>
+                <pre>
+# EC2 User Data
+#!/bin/bash
+yum update -y
+amazon-linux-extras install docker -y
+service docker start
+usermod -a -G docker ec2-user
+aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${REPO_NAME}:latest
+docker run -d -p 80:5000 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${REPO_NAME}:latest</pre>
+            </div>
+        </div>
+
+        <a href="{{ url_for('about') }}" class="btn">Learn About Our Container Strategy</a>
     </div>
 {% endblock %}

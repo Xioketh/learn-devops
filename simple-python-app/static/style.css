@@ -88,3 +88,59 @@ body {
     padding: 20px;
     border-top: 1px solid #444;
 }
+
+.architecture {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+pre {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    color: #4CAF50;
+}
+
+.feature-box ul, .feature-box ol {
+    padding-left: 20px;
+}
+
+.feature-box li {
+    margin-bottom: 8px;
+}
+
+.deployment-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.option {
+    width: 48%;
+    background-color: #111;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.option h4 {
+    color: #4CAF50;
+    margin-top: 0;
+}
+
+.option pre {
+    background-color: #222;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .deployment-options {
+        flex-direction: column;
+    }
+    .option {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
